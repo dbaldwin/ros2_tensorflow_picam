@@ -15,3 +15,5 @@ echo \
 sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+docker run -it --rm --privileged -v /dev:/dev/ -v /run/udev/:/run/udev/ --group-add video droneblocks/dexi-pi-camera-ros ros2 run camera_ros camera_node
