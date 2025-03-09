@@ -30,6 +30,8 @@ setup(
     entry_points={
         'console_scripts': [
             'object_detection_node = ros2_tensorflow_picam.object_detection_node:main',
+            'canny_edge_detection_node = ros2_tensorflow_picam.canny_edge_detection_node:main',
+            'sobel_edge_detection_node = ros2_tensorflow_picam.sobel_edge_detection_node:main'
         ],
     },
 )
