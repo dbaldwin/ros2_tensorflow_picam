@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CompressedImage
 from std_msgs.msg import String
 from cv_bridge import CvBridge
 import cv2
@@ -61,6 +61,7 @@ class ObjectDetectionNode(Node):
         self.bridge = CvBridge()
         self.image_subscriber = self.create_subscription(Image, '/camera/image_raw', self.image_callback, 10)
         self.object_publisher = self.create_publisher(String, 'detected_objects', 10)
+        self.compressed_image_publisher = self.create_publisher(CompressedImage, '/camera/image_raw/compressed', 10)
 
     def image_callback(self, msg):
         frame = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
@@ -89,8 +90,14 @@ class ObjectDetectionNode(Node):
                 msg.data = label
                 self.object_publisher.publish(msg)
 
-        self.get_logger().info(f'Detected {len(scores)} objects')
+        # Compress image and publish it
+        compressed_msg = CompressedImage()
+        compressed_msg.header = msg.header
+        compressed_msg.format = "jpeg"
+        compressed_msg.data = np.array(cv2.imencode('.jpg', frame)[1]).tobytes()
+        self.compressed_image_publisher.publish(compressed_msg)
 
+        self.get_logger().info(f'Detected {len(scores)} objects')
 
 def main(args=None):
     rclpy.init(args=args)
@@ -98,7 +105,6 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
