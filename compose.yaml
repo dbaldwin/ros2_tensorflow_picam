@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   camera_node:
     image: droneblocks/dexi-pi-camera-ros
@@ -16,3 +14,7 @@ services:
     image: droneblocks/dexi-tensorflow-ros
     container_name: object_detection_node
     command: ros2 run ros2_tensorflow_picam object_detection_node
+
+  web_video_server_node:
+    image: droneblocks/dexi-web-video-server-ros
+    container_name: web_video_server

@@ -1,0 +1,7 @@
+FROM arm64v8/ros:jazzy
+
+RUN sudo apt update -y && apt install -y ros-jazzy-web-video-server
+
+WORKDIR /app
+
+CMD ["ros2", "run", "web_video_server", "web_video_server"]
