@@ -86,9 +86,9 @@ class ObjectDetectionNode(Node):
         for i in range(len(scores)):
             if scores[i] > self.min_conf_threshold:
                 label = f"{self.labels[int(classes[i])]}: {scores[i]:.2f}"
-                msg = String()
-                msg.data = label
-                self.object_publisher.publish(msg)
+                detection_msg = String()
+                detection_msg.data = label
+                self.object_publisher.publish(detection_msg)
 
         # Compress image and publish it
         compressed_msg = CompressedImage()
@@ -105,6 +105,7 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
