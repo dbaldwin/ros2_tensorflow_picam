@@ -2,7 +2,7 @@ services:
   camera_node:
     image: droneblocks/dexi-pi-camera-ros
     container_name: camera_node
-    command: ros2 run camera_ros camera_node
+    command: ros2 run camera_ros camera_node --ros-args -p width:=320 -p height:=240
     privileged: true
     volumes:
       - /dev:/dev/
@@ -18,3 +18,5 @@ services:
   web_video_server_node:
     image: droneblocks/dexi-web-video-server-ros
     container_name: web_video_server
+    ports:
+      - "8080:8080"
